@@ -18,11 +18,15 @@ func _input(event):
 
 
 func _process(delta):
-	var velocity = Vector2()
-	# Move towards the target and stop when close.
-	if position.distance_to(target) > 10:
-		velocity = target - position
-		
+	var velocity = Vector2() # The player's movement vector.
+	if Input.is_action_pressed("ui_right"):
+		velocity.x += 1
+	if Input.is_action_pressed("ui_left"):
+		velocity.x -= 1
+	if Input.is_action_pressed("ui_down"):
+		velocity.y += 1
+	if Input.is_action_pressed("ui_up"):
+		velocity.y -= 1
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
@@ -50,7 +54,7 @@ func start(new_position):
 	show()
 	$CollisionShape2D.disabled = false
 
-func _on_Player_body_entered(body):
+func _on_Player_body_entered(_body):
 	hide()
 	$CollisionShape2D.set_deferred("disabled", true)
 	emit_signal("hit")
